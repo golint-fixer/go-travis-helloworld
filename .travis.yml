@@ -20,5 +20,5 @@ before_install:
 script:
   - golint $(go list ./... | grep -v /vendor/)
   - go vet $(go list ./... | grep -v /vendor/)
-  - go test $(go list ./... | grep -v /vendor/)
+  - go test -race $(go list ./... | grep -v /vendor/)
   - go build -o hello ./cmd/hello
