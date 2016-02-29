@@ -4,6 +4,21 @@ go:
   - 1.6
   - tip
 
-scripts:
-  - go vet ./...
+matrix:
+  allow_failures:
+    go: tip
+
+env:
+  global:
+    - GOOS=linux
+    - GOARCH=amd64
+
+before_install:
+  - go get github.com/golang/lint/golint
+  - go get golang.org/x/tools/cmd/vet
+
+script:
+  - golint $(go list ./... | grep -v /vendor/)
+  - go vet $(go list ./... | grep -v /vendor/)
   - go test $(go list ./... | grep -v /vendor/)
+  - go build -o hello ./cmd/hello
